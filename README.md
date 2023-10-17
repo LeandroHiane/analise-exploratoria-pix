@@ -141,7 +141,7 @@ sns.heatmap(data_payments_treat.corr(numeric_only = True), annot = True, cmap = 
 ```
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/890fb3d3-fd69-4e4a-9dd5-0d6d91fe49e5)
 
-Novamente, podemos notar altos coeficientes de correlação negativos entre a variável dependente `Pix` e as variáveis explicativas que incluem `DOC`, `Cheque` e `TED`, corroborando a análise da primeira base. Além disso, a modalidade `Saque` também apresentou coeficiente negativo relevante em relação ao `Pix`, possivelmente efeito da digitalização proporcionada pelo Pix.
+:bulb: Novamente, podemos notar altos coeficientes de correlação negativos entre a variável dependente `Pix` e as variáveis explicativas que incluem `DOC`, `Cheque` e `TED`, corroborando a análise da primeira base. Além disso, a modalidade `Saque` também apresentou coeficiente negativo relevante em relação ao `Pix`, possivelmente efeito da digitalização proporcionada pelo Pix.
 
 Um ponto interessante de observação são os altos coeficientes de correlação direta da variável dependente com as variáveis explicativas relacionadas ao meio de pagamento `Cartão`. Em uma análise imediata, é possível admitir que ambos os meios de pagamento se beneficiam das mesmas dinâmicas de mercado, assim como `Boleto`.
 
