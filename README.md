@@ -118,9 +118,9 @@ A partir da análise da correlação, conseguimos responder ao nosso questioname
 > [!NOTE]
 > O aumento expressivo da quantidade de transações realizadas por Pix acontece somente pela indisponibilidade de outros meios de transferência e pagamentos para parcela considerável da população brasileira ou o Pix avança sobre outros meios existentes?
 
-Provavelmente, pela representatividade dos valores das variáveis na série temporal, o Pix se mostrou importante ferramenta de inclusão financeira, atingindo parte da população que não dispunha de outros meios de transferência ou pagamento.
+:information_source: Provavelmente, pela representatividade dos valores das variáveis na série temporal, o Pix se mostrou importante ferramenta de inclusão financeira, atingindo parte da população que não dispunha de outros meios de transferência ou pagamento.
 
-Porém, os altos coeficientes de correlação negativos entre a variável dependente `Pix` e as variáveis explicativas `DOC`, `Cheque` e `TED` nos mostram que o Pix também avançou na preferência de parcela da população que já dispunha de meios de transferência ou pagamento "tradicionais". Quanto mais o Pix foi ganhando adesão no uso por parte dos brasileiros, mais esses outros meios foram perdendo espaço.
+:bulb: Porém, os altos coeficientes de correlação negativos entre a variável dependente `Pix` e as variáveis explicativas `DOC`, `Cheque` e `TED` nos indicam que o Pix também avançou na preferência de parcela da população que já dispunha de meios de transferência ou pagamento "tradicionais". Quanto mais o Pix foi ganhando adesão no uso por parte dos brasileiros, mais esses outros meios foram perdendo espaço.
 
 Também é importante observar a correlação direta entre as variáveis `Pix` e `Boleto`, o que indica que não somente não concorrem como meio de transferência ou pagamento, como tendem a se beneficiar da mesma dinâmica de mercado.
 
