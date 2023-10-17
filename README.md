@@ -161,3 +161,11 @@ sns.pairplot(data_payments_treat, y_vars = 'Pix', x_vars = ['Boleto + Convênio'
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/517e4573-d2ca-473a-9b9f-a719febad5fd)
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/89e257b2-5cc6-4497-8a31-f098305f5e3c)
 3. Cruzamento com outras bases de dados podem ser necessários para tornar essa análise mais robusta.
+
+## :rocket: Agenda do BACEN para o Pix
+Muito provavelmente o BACEN está de olho em análises como essa! Uma prova são as modalidades de pagamento com Pix que estão na agenda do BACEN: 
+* Pix Cobrança (já lançado, opção ao boleto bancário que substitui o código de barras por QR code);
+* Pix Garantido (opção de parcelamento via Pix, o que, na prática, pode substituir os cartões de crédito);
+* Pix Automático (cobrança recorrente via Pix mediante autorização do titular da conta, o que, na prática, pode substituir o débito automático).
+
+Ou seja, os meios de transferência ou pagamento que observamos que não foram absorvidos pelo Pix ainda, como Cartões e Boleto, logo ganharão a sua versão de concorrência...
