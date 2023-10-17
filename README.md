@@ -18,11 +18,13 @@ Fonte: [Exame](https://exame.com/economia/inclusao-financeira-com-pix-alcanca-49
 > [!NOTE]
 > Assim, surge o questionamento: o aumento expressivo da quantidade de transações realizadas por Pix acontece somente pela indisponibilidade de outros meios de transferência e pagamentos para parcela considerável da população brasileira ou o Pix avança sobre outros meios existentes?
 
-## Análise exploratória
+## Análise exploratória da primeira base
 O próprio BACEN disponibiliza alguns dados publicamente sobre meios de transferência e pagamentos, disponíveis aqui:
 https://www.bcb.gov.br/estatisticas/spbadendos
 
-Para responder ao questionamento, vamos utilizar duas bases de dados baixadas do link acima, disponíveis na pasta Data do projeto. A primeira base de dados disponibiliza a quantidade de transações realizadas por diversos meios de transferência em milhares, distribuídas mensalmente de outubro/2020 a agosto/2023.
+Para responder ao questionamento, vamos utilizar duas bases de dados baixadas do link acima, disponíveis na pasta Data do projeto.
+
+A primeira base de dados disponibiliza a quantidade de transações realizadas por diversos meios de transferência em milhares, distribuídas mensalmente de outubro/2020 a agosto/2023.
 
 Para iniciar, vamos importar as libs necessárias no projeto:
 ```python
@@ -37,7 +39,7 @@ data.head()
 ```
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/9cb9b8e5-dd6e-42ab-bcbf-5cea91c710dc)
 
-É possível notar que o primeiro mês da série temporal possui valor zerado para a variável Pix. Em notícias públicas, constatamos que o Pix foi lançado em outubro/2020, mas somente em novembro/2020 foram realizadas as primeiras transações reais. Como esta é a nossa variável dependente, não faz sentido mantermos as entradas sem valores de Pix cadastrados. Vamos retirá-las:
+:eye: É possível notar que o primeiro mês da série temporal possui valor zerado para a variável Pix. Em notícias públicas, constatamos que o Pix foi lançado em outubro/2020, mas somente em novembro/2020 foram realizadas as primeiras transações reais. Como esta é a nossa variável dependente, não faz sentido mantermos as entradas sem valores de Pix cadastrados. Vamos retirá-las:
 ```python
 data_filter = data['Pix'] > 0
 data_treat = data[data_filter]
@@ -51,7 +53,7 @@ data_treat.info()
 ```
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/15b88109-203f-45c8-93f6-0fcf10faecea)
 
-Nenhum dado faltante e variáveis com formato correto para análise.
+:white_check_mark: Nenhum dado faltante e variáveis com formato correto para análise.
 
 Outro jeito de ver itens faltantes é através do `isnull()`:
 ```python
@@ -65,7 +67,7 @@ data_treat.duplicated().sum()
 ```
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/600be907-c5c6-46e2-8fb1-54baf76e89cc)
 
-Também é importante buscar por outliers e o gráfico boxplot é um jeito rápido de notá-los:
+:eye: Também é importante buscar por outliers e o gráfico boxplot é um jeito rápido de notá-los:
 ```python
 ax = sns.boxplot(data_treat, orient = 'h')
 ax.figure.set_size_inches(12, 8)
@@ -81,7 +83,7 @@ ax
 ```
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/b01c7683-0cdf-4a4e-97b5-5ee0ef06c41e)
 
-O primeiro ímpeto é sempre limpar os outliers, principalmente se o objetivo for a elaboração de modelos estatísticos. Porém, primeiramente é necessário entender a causa dos outliers no dataset, que pode ser erro de digitação, separador de milhares ou decimais inconsistentes, sazonalidade do negócio, mudanças abruptas causadas por eventos externos, etc.
+:bulb: O primeiro ímpeto é sempre limpar os outliers, principalmente se o objetivo for a elaboração de modelos estatísticos. Porém, primeiramente é necessário entender a causa dos outliers no dataset, que pode ser erro de digitação, separador de milhares ou decimais inconsistentes, sazonalidade do negócio, mudanças abruptas causadas por eventos externos, etc.
 
 Assim, vamos dar uma olhada no comportamento de cada uma delas ao longo do tempo:
 ```python
@@ -92,7 +94,7 @@ data_treat.plot(subplots = True, figsize = [14, 20])
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/f03b74ac-2d29-4647-bce1-0494e64bd7c7)
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/e623541c-2f79-40d3-8265-cc50b5f7ff2d)
 
-Se admitirmos como premissa que a base oficial do BACEN não contém erros de digitação ou formatação, nenhuma das variáveis apresenta comportamento anormal além da própria variação causada pelo ambiente de negócio, o que é relevante para a análise do nosso questionamento. Portanto, vamos manter os outliers no dataset.
+Se admitirmos como premissa que a base oficial do BACEN não contém erros de digitação ou formatação, nenhuma das variáveis apresenta comportamento anormal além da própria variação causada pelo ambiente de negócio, o que é relevante para a análise do nosso questionamento. Portanto, vamos manter os outliers no dataset :white_check_mark:
 
 Agora sim, podemos utilizar a matriz de correlação para observar as relações entre as variáveis estudadas:
 ```python
@@ -112,10 +114,50 @@ Resumidamente, quanto mais próximo de 1 é o valor, mais diretamente as variáv
 
 O inverso é válido. Quanto mais próximo de -1 é o valor, mais inversamente as variáveis se relacionam. Ou seja, se uma aumenta, a outra reduz. Se uma reduz, a outra aumenta.
 
-A partir da análise da correlação, consegumimos responder ao nosso questionamento:
+A partir da análise da correlação, conseguimos responder ao nosso questionamento:
 > [!NOTE]
 > O aumento expressivo da quantidade de transações realizadas por Pix acontece somente pela indisponibilidade de outros meios de transferência e pagamentos para parcela considerável da população brasileira ou o Pix avança sobre outros meios existentes?
 
 Provavelmente, pela representatividade dos valores das variáveis na série temporal, o Pix se mostrou importante ferramenta de inclusão financeira, atingindo parte da população que não dispunha de outros meios de transferência ou pagamento.
 
 Porém, os altos coeficientes de correlação negativos entre a variável dependente `Pix` e as variáveis explicativas `DOC`, `Cheque` e `TED` nos mostram que o Pix também avançou na preferência de parcela da população que já dispunha de meios de transferência ou pagamento "tradicionais". Quanto mais o Pix foi ganhando adesão no uso por parte dos brasileiros, mais esses outros meios foram perdendo espaço.
+
+Também é importante observar a correlação direta entre as variáveis `Pix` e `Boleto`, o que indica que não somente não concorrem como meio de transferência ou pagamento, como tendem a se beneficiar da mesma dinâmica de mercado.
+
+Outra forma de analisar possíveis relações entre variáveis é através de gráficos de dispersão com reta de regressão:
+```python
+sns.pairplot(data_treat, y_vars = 'Pix', x_vars = ['Boleto', 'DOC', 'TEC', 'Cheque', 'TED'], kind = 'reg')
+```
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/60df398d-f96a-4a6b-99d0-357b9703c998)
+
+## Análise exploratória da segunda base
+A segunda base de dados de estudo disponibiliza a quantidade de transações realizadas por diversos meios de pagamento em milhares, distribuídas trimestralmente do primeiro trimestre de 2019 ao primeiro trimestre de 2023.
+
+O processo de importação e limpeza do dataset foi semelhante ao da primeira base e não serei detalhista para que a análise não fique mais longa que o necessário.
+
+O resultado da matriz de correlação é:
+```python
+sns.heatmap(data_payments_treat.corr(numeric_only = True), annot = True, cmap = "Blues")
+```
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/890fb3d3-fd69-4e4a-9dd5-0d6d91fe49e5)
+
+Novamente, podemos notar altos coeficientes de correlação negativos entre a variável dependente `Pix` e as variáveis explicativas que incluem `DOC`, `Cheque` e `TED`, corroborando a análise da primeira base. Além disso, a modalidade `Saque` também apresentou coeficiente negativo relevante em relação ao `Pix`, possivelmente efeito da digitalização proporcionada pelo Pix.
+
+Um ponto interessante de observação são os altos coeficientes de correlação direta da variável dependente com as variáveis explicativas relacionadas ao meio de pagamento `Cartão`. Em uma análise imediata, é possível admitir que ambos os meios de pagamento se beneficiam das mesmas dinâmicas de mercado, assim como `Boleto`.
+
+Por fim, seguem os gráficos de dispersão com reta de regressão:
+```python
+sns.pairplot(data_payments_treat, y_vars = 'Pix', x_vars = ['Boleto + Convênio', 'Outros (DOC + TEC + Cheque)', 'TED', 'Cartão de Crédito',
+                                     'Cartão de Débito', 'Cartão Pré-Pago', 'Saques', 'Transferencias Intrabancarias',
+                                     'Débito Direto'], 
+             kind = 'reg')
+```
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/a1a033a0-a808-4f4c-8d17-aad90a5ca1bd)
+
+## :warning: Limitações do estudo 
+1. Ambas as bases possuem poucas observações, em parte explicada pelo lançamento do Pix ser recente, o que torna a análise mais sensível a erros.
+2. As bases carecem de dados anteriores ao lançamento do Pix. A segunda base nos traz séries temporais anteriores ao lançamento do Pix e é possível observar algumas tendências de queda em variáveis explicativas antes do advento do Pix, como, por exemplo, para variável `Outros (DOC + TEC + Cheque` e `Saque`:
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/e82c7c2b-4a40-4283-a5d9-c9be090528dc)
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/517e4573-d2ca-473a-9b9f-a719febad5fd)
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/89e257b2-5cc6-4497-8a31-f098305f5e3c)
+3. Cruzamento com outras bases de dados podem ser necessários para tornar essa análise mais robusta.
