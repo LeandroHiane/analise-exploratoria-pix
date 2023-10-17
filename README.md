@@ -53,11 +53,69 @@ data_treat.info()
 
 Nenhum dado faltante e variáveis com formato correto para análise.
 
+Outro jeito de ver itens faltantes é através do `isnull()`:
+```python
+data_treat.isnull().sum()
+```
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/c5d79d74-2526-4a59-8e71-08b49063ba1f)
+
+Por se tratar de dados de série temporal, provavelmente não teremos linhas repetidas. Mas, podemos verificar:
+```python
+data_treat.duplicated().sum()
+```
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/600be907-c5c6-46e2-8fb1-54baf76e89cc)
+
 Também é importante buscar por outliers e o gráfico boxplot é um jeito rápido de notá-los:
 ```python
 ax = sns.boxplot(data_treat, orient = 'h')
 ax.figure.set_size_inches(12, 8)
 ax
 ```
-![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/46261b9d-58ef-47d7-9f55-002289ea2f72)
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/e380d83b-2d9d-41b5-8fd4-72661c920b46)
 
+Podemos ver que as variáveis `Boleto`, `DOC`, `TEC` e `TED` apresentaram outliers. Vamos olhar com detalhes para elas:
+```python
+ax = sns.boxplot(data_treat[['Boleto', 'DOC', 'TEC', 'TED']], orient = 'h')
+ax.figure.set_size_inches(12, 8)
+ax
+```
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/b01c7683-0cdf-4a4e-97b5-5ee0ef06c41e)
+
+O primeiro ímpeto é sempre limpar os outliers, principalmente se o objetivo for a elaboração de modelos estatísticos. Porém, primeiramente é necessário entender a causa dos outliers no dataset, que pode ser erro de digitação, separador de milhares ou decimais inconsistentes, sazonalidade do negócio, mudanças abruptas causadas por eventos externos, etc.
+
+Assim, vamos dar uma olhada no comportamento de cada uma delas ao longo do tempo:
+```python
+data_treat.plot(subplots = True, figsize = [14, 20])
+```
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/4635e443-5391-4c28-a8af-192ed8d409c5)
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/e2b6781f-7b49-451f-8174-a64ec29e307c)
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/f03b74ac-2d29-4647-bce1-0494e64bd7c7)
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/e623541c-2f79-40d3-8265-cc50b5f7ff2d)
+
+Se admitirmos como premissa que a base oficial do BACEN não contém erros de digitação ou formatação, nenhuma das variáveis apresenta comportamento anormal além da própria variação causada pelo ambiente de negócio, o que é relevante para a análise do nosso questionamento. Portanto, vamos manter os outliers no dataset.
+
+Agora sim, podemos utilizar a matriz de correlação para observar as relações entre as variáveis estudadas:
+```python
+data_treat.corr(numeric_only = True)
+```
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/3d5b6ef4-57a6-4735-b4d0-ad00032a9246)
+
+Ok, não é o melhor jeito de observar essa matriz. Vamos plotar em um gráfico:
+```python
+sns.heatmap(data_treat.corr(numeric_only = True), annot = True, cmap = "Blues")
+```
+![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/d834b408-3355-4efc-beb5-63a72cb18060)
+
+Cada número representa o coeficiente de correlação entre as variáveis da interseção em que o coeficiente se encontra. Por exemplo, o valor `0,29` no segundo quadrado, na interseção entre as variáveis `Pix` e `Boleto` representa o coeficiente de correlação entre essas variáveis.
+
+Resumidamente, quanto mais próximo de 1 é o valor, mais diretamente as variáveis se relacionam. Ou seja, se uma aumenta, a outra também aumenta. Se uma reduz, a outra também reduz. Por isso a interseção de uma variável com ela mesma é sempre 1, pois, naturalmente, apresentam relação direta perfeita.
+
+O inverso é válido. Quanto mais próximo de -1 é o valor, mais inversamente as variáveis se relacionam. Ou seja, se uma aumenta, a outra reduz. Se uma reduz, a outra aumenta.
+
+A partir da análise da correlação, consegumimos responder ao nosso questionamento:
+> [!NOTE]
+> O aumento expressivo da quantidade de transações realizadas por Pix acontece somente pela indisponibilidade de outros meios de transferência e pagamentos para parcela considerável da população brasileira ou o Pix avança sobre outros meios existentes?
+
+Provavelmente, pela representatividade dos valores das variáveis na série temporal, o Pix se mostrou importante ferramenta de inclusão financeira, atingindo parte da população que não dispunha de outros meios de transferência ou pagamento.
+
+Porém, os altos coeficientes de correlação negativos entre a variável dependente `Pix` e as variáveis explicativas `DOC`, `Cheque` e `TED` nos mostram que o Pix também avançou na preferência de parcela da população que já dispunha de meios de transferência ou pagamento "tradicionais". Quanto mais o Pix foi ganhando adesão no uso por parte dos brasileiros, mais esses outros meios foram perdendo espaço.
