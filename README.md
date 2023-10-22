@@ -118,9 +118,9 @@ A partir da análise da correlação, conseguimos responder ao nosso questioname
 > [!NOTE]
 > O aumento expressivo da quantidade de transações realizadas por Pix acontece somente pela indisponibilidade de outros meios de transferência e pagamentos para parcela considerável da população brasileira ou o Pix avança sobre outros meios existentes?
 
-:information_source: Provavelmente, pela representatividade dos valores das variáveis na série temporal, o Pix se mostrou importante ferramenta de inclusão financeira, atingindo parte da população que não dispunha de outros meios de transferência ou pagamento.
+:information_source: Possivelmente, pela representatividade dos valores das variáveis na série temporal, o Pix se mostrou importante ferramenta de inclusão financeira, atingindo parte da população que não dispunha de outros meios de transferência ou pagamento.
 
-:bulb: Porém, os altos coeficientes de correlação negativos entre a variável dependente `Pix` e as variáveis explicativas `DOC`, `Cheque` e `TED` nos indicam que o Pix também avançou na preferência de parcela da população que já dispunha de meios de transferência ou pagamento "tradicionais". Quanto mais o Pix foi ganhando adesão no uso por parte dos brasileiros, mais esses outros meios foram perdendo espaço.
+:bulb: Porém, os altos coeficientes de correlação negativos entre a variável dependente `Pix` e as variáveis explicativas `DOC`, `Cheque` e `TED` nos dão forte indícios de que o Pix também avançou na preferência da população brasileira que já dispunha de meios de transferência ou pagamento "tradicionais". Quanto mais o Pix foi ganhando adesão no uso por parte dos brasileiros, mais esses outros meios foram perdendo espaço.
 
 Também é importante observar a correlação direta entre as variáveis `Pix` e `Boleto`, o que indica que não somente não concorrem como meio de transferência ou pagamento, como tendem a se beneficiar da mesma dinâmica de mercado.
 
@@ -143,7 +143,7 @@ sns.heatmap(data_payments_treat.corr(numeric_only = True), annot = True, cmap = 
 
 :bulb: Novamente, podemos notar altos coeficientes de correlação negativos entre a variável dependente `Pix` e as variáveis explicativas que incluem `DOC`, `Cheque` e `TED`, corroborando a análise da primeira base. Além disso, a modalidade `Saque` também apresentou coeficiente negativo relevante em relação ao `Pix`, possivelmente efeito da digitalização proporcionada pelo Pix.
 
-Um ponto interessante de observação são os altos coeficientes de correlação direta da variável dependente com as variáveis explicativas relacionadas ao meio de pagamento `Cartão`. Em uma análise imediata, é possível admitir que ambos os meios de pagamento se beneficiam das mesmas dinâmicas de mercado, assim como `Boleto`.
+:bulb: Um ponto interessante de observação são os altos coeficientes de correlação direta da variável dependente com as variáveis explicativas relacionadas ao meio de pagamento `Cartão`. Em uma análise imediata, é possível admitir que ambos os meios de pagamento se beneficiam das mesmas dinâmicas de mercado, assim como `Boleto`.
 
 Por fim, seguem os gráficos de dispersão com reta de regressão:
 ```python
@@ -155,12 +155,13 @@ sns.pairplot(data_payments_treat, y_vars = 'Pix', x_vars = ['Boleto + Convênio'
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/a1a033a0-a808-4f4c-8d17-aad90a5ca1bd)
 
 ## :warning: Limitações do estudo 
-1. Ambas as bases possuem poucas observações, em parte explicada pelo lançamento do Pix ser recente, o que torna a análise mais sensível a erros.
-2. As bases carecem de dados anteriores ao lançamento do Pix. A segunda base nos traz séries temporais anteriores ao lançamento do Pix e é possível observar algumas tendências de queda em variáveis explicativas antes do advento do Pix, como, por exemplo, para variável `Outros (DOC + TEC + Cheque` e `Saque`:
+1. Correlação não significa causalidade. Como o nome sugere, correlação mostra a existência ou não de relação entre duas variáveis, mas não necessariamente uma é a causa da outra. Para comprovar causalidade, são necessários estudos científicos, com realização de testes em ambientes controlados.
+2. Ambas as bases possuem poucas observações, em parte explicada pelo lançamento do Pix ser recente, o que torna a análise mais sensível a erros.
+3. As bases carecem de dados anteriores ao lançamento do Pix. A segunda base traz séries temporais anteriores ao lançamento do Pix e é possível observar algumas tendências de queda em variáveis explicativas antes do advento do Pix, como, por exemplo, para variáveis `Outros (DOC + TEC + Cheque` e `Saque`:
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/e82c7c2b-4a40-4283-a5d9-c9be090528dc)
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/517e4573-d2ca-473a-9b9f-a719febad5fd)
 ![image](https://github.com/LeandroHiane/analise-exploratoria-pix/assets/90648655/89e257b2-5cc6-4497-8a31-f098305f5e3c)
-3. Cruzamento com outras bases de dados podem ser necessários para tornar essa análise mais robusta.
+4. Cruzamento com outras bases de dados podem ser necessários para tornar essa análise mais robusta.
 
 ## :rocket: Agenda do BACEN para o Pix
 Muito provavelmente o BACEN está de olho em análises como essa! Uma prova são as modalidades de pagamento com Pix que estão na agenda do BACEN: 
@@ -168,4 +169,4 @@ Muito provavelmente o BACEN está de olho em análises como essa! Uma prova são
 * Pix Garantido (opção de parcelamento via Pix, o que, na prática, pode substituir os cartões de crédito);
 * Pix Automático (cobrança recorrente via Pix mediante autorização do titular da conta, o que, na prática, pode substituir o débito automático).
 
-Ou seja, os meios de transferência ou pagamento que observamos que não foram absorvidos pelo Pix ainda, como Cartões e Boleto, logo ganharão a sua versão de concorrência...
+Ou seja, os meios de transferência ou pagamento que observamos que não foram absorvidos pelo Pix ainda, como Cartões, Boleto e Débito Direto, logo ganharão a sua versão de concorrência...
